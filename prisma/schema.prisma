@@ -12,21 +12,21 @@ datasource db {
 
 model User {
   id                          String                        @id @default(uuid())
-  name                        String @db.VarChar(255)
-  nickname                    String @db.VarChar(255)                       @unique
-  email                       String @db.VarChar(255)                       @unique
+  name                        String                        @db.VarChar(255)
+  nickname                    String                        @unique @db.VarChar(255)
+  email                       String                        @unique @db.VarChar(255)
   Task                        Task[]
   ResponsibleUserTaskRelation ResponsibleUserTaskRelation[]
 }
 
 model Task {
-  id                     String                        @id @default(uuid())
-  title                       String @db.VarChar(255) @unique
-  description                 String @db.VarChar(255)
-  status                      String @db.VarChar(255) @default("to_do")
-  limit_date                  DateTime @db.Date	
-  user                        User                          @relation(fields: [user_id], references: [id])
-  user_id                     String @db.VarChar(255)
+  id                          String                        @id @default(uuid())
+  title                       String                        @unique @db.VarChar(255)
+  description                 String                        @db.VarChar(255)
+  status                      String                        @default("to_do") @db.VarChar(255)
+  limit_date                  DateTime                      @db.Date
+  users                       User                          @relation(fields: [creator_user_id], references: [id])
+  creator_user_id             String                        @db.VarChar(255)
   ResponsibleUserTaskRelation ResponsibleUserTaskRelation[]
 }
 

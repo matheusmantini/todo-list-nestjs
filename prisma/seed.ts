@@ -14,7 +14,7 @@ async function main() {
       title: "Criar novos endpoins para a API",
       description: "Deserunt aute elit cupidatat aliqua commodo amet quis sint anim consectetur ex et.",
       limit_date: "2022-09-30T00:00:00.000Z",
-      user_id: "1ed073fe-280d-4b8d-b9d8-ea95038e0ef7",
+      creator_user_id: "1ed073fe-280d-4b8d-b9d8-ea95038e0ef7",
     },
   });
 
@@ -25,7 +25,7 @@ async function main() {
       title: "Aprimorar o tempo de resposta da API",
       description: "Veniam ipsum consequat ipsum proident dolore Lorem qui.",
       limit_date: "2022-09-30T00:00:00.000Z",
-      user_id: "1ed073fe-280d-4b8d-b9d8-ea95038e0ef7",
+      creator_user_id: "1ed073fe-280d-4b8d-b9d8-ea95038e0ef7",
     },
   });
 

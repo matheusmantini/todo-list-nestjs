@@ -1,11 +1,14 @@
 import { Exclude, Expose } from 'class-transformer';
+import { IsOptional } from 'class-validator';
 export class UpdateUser {
   @Exclude()
   id: string;
   @Expose()
-  name: string;
+  @IsOptional()
+  name?: string;
   @Expose()
-  nickname: string;
+  @IsOptional()
+  nickname?: string;
   @Exclude()
   email: string;
 }
