@@ -14,8 +14,8 @@ export class CreateUserDto {
   @ApiProperty()
   nickname: string;
 
-  @IsString()
   @IsEmail()
+  @IsNotEmpty()
   @ApiProperty()
   email: string;
 }

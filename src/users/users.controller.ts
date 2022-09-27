@@ -11,26 +11,32 @@ import {
 import { UsersService } from "./users.service";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
-import { ApiCreatedResponse, ApiTags } from "@nestjs/swagger";
-import { UserEntity } from "./entities/user.entity";
+import { User } from "./entities/user.entity";
+import { Serialize } from "src/interceptors/serialize.interceptor";
+import { CreateUser } from "./entities/create-user.entity";
+import { AllUsers } from "./entities/all-user.entity";
+import { UpdateUser } from "./entities/update-user.entity";
+import { ApiTags } from "@nestjs/swagger";
 
-@Controller("users")
-@ApiTags("Users")
+@ApiTags('User')
+@Controller("user")
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
-  @ApiCreatedResponse({ type: UserEntity })
+  @Serialize(CreateUser)
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
   }
 
-  @Get()
+  @Get("all")
+  @Serialize(AllUsers)
   findAll() {
     return this.usersService.findAll();
   }
 
-  @Get("/:id")
+  @Get(":id")
+  @Serialize(User)
   async findOne(@Param("id") id: string) {
     const user = await this.usersService.findOne(id);
 
@@ -42,9 +48,9 @@ export class UsersController {
   }
 
   @Patch(":id")
+  @Serialize(UpdateUser)
   update(@Param("id") id: string, @Body() updateUserDto: UpdateUserDto) {
-    const user = this.usersService.update(id, updateUserDto);
-    return user;
+    return this.usersService.update(id, updateUserDto);
   }
 
   @Delete(":id")

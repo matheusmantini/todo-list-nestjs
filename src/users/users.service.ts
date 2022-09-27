@@ -1,8 +1,7 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { PrismaService } from "src/prisma/prisma.service";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
-import { UserEntity } from "./entities/user.entity";
 
 @Injectable()
 export class UsersService {
@@ -17,9 +16,6 @@ export class UsersService {
   }
 
   findOne(id: string) {
-    if (!id) {
-      return null;
-    }
     return this.prisma.user.findUnique({ where: { id } });
   }
 

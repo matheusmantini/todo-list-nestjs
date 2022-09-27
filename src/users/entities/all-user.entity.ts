@@ -1,8 +1,8 @@
 import { Exclude, Expose } from 'class-transformer';
-export class User {
-  @Exclude()
-  id: string;
+export class AllUsers {
   @Expose()
+  id: string;
+  @Exclude()
   name: string;
   @Expose()
   nickname: string;

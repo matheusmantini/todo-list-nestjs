@@ -1,5 +1,5 @@
 import { Exclude, Expose } from 'class-transformer';
-export class User {
+export class UpdateUser {
   @Exclude()
   id: string;
   @Expose()
