@@ -1,0 +1,4 @@
+### Pegar todos os usuários que tem determinadas letras
+GET http://localhost:3000/user?search=th
+
+

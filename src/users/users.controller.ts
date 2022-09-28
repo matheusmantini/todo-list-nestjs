@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   NotFoundException,
+  Query,
 } from "@nestjs/common";
 import { UsersService } from "./users.service";
 import { CreateUserDto } from "./dto/create-user.dto";
@@ -17,8 +18,9 @@ import { CreateUser } from "./entities/create-user.entity";
 import { AllUsers } from "./entities/all-user.entity";
 import { UpdateUser } from "./entities/update-user.entity";
 import { ApiTags } from "@nestjs/swagger";
+import { Console } from "console";
 
-@ApiTags('User')
+@ApiTags("User")
 @Controller("user")
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
@@ -45,6 +47,21 @@ export class UsersController {
     }
 
     return user;
+  }
+
+  @Get()
+  async findUserBySearch(@Query() query: { search: string }) {
+    if (
+      query.search === undefined ||
+      query.search === "" ||
+      Object.keys(query).length === 0
+    ) {
+      throw new NotFoundException("parameter search not found");
+    }
+    const usersFiltered = await this.usersService.findUsersBySearch(
+      query.search
+    );
+    return usersFiltered;
   }
 
   @Patch(":id")

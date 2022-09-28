@@ -19,6 +19,16 @@ export class UsersService {
     return this.prisma.user.findUnique({ where: { id } });
   }
 
+  findUsersBySearch(search: string) {
+    return this.prisma.user.findMany({
+      where: {
+        nickname: {
+          contains: `${search}`,
+        },
+      },
+    });
+  }
+
   update(id: string, updateUserDto: UpdateUserDto) {
     return this.prisma.user.update({
       where: { id },
