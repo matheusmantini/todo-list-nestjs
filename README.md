@@ -7,7 +7,7 @@
 - [x] Pegar tarefa pelo id
 - [x] Pegar todos os usuários
 - [x] Pegar tarefas criadas por um usuário
-- [ ] Pesquisar usuário
+- [x] Pesquisar usuário
 - [ ] Atribuir um usuário responsável a uma tarefa
 - [ ] Pegar usuários responsáveis por uma tarefa
 - [ ] Pegar tarefa pelo id e os responsáveis por ela
