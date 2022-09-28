@@ -17,7 +17,7 @@ import { Serialize } from "src/interceptors/serialize.interceptor";
 import { CreateUser } from "./entities/create-user.entity";
 import { AllUsers } from "./entities/all-user.entity";
 import { UpdateUser } from "./entities/update-user.entity";
-import { ApiTags } from "@nestjs/swagger";
+import { ApiQuery, ApiTags } from "@nestjs/swagger";
 import { Console } from "console";
 
 @ApiTags("User")
@@ -50,6 +50,11 @@ export class UsersController {
   }
 
   @Get()
+  @ApiQuery({
+    name: 'search',
+    required: true,
+    type: String,
+  })
   async findUserBySearch(@Query() query: { search: string }) {
     if (
       query.search === undefined ||
