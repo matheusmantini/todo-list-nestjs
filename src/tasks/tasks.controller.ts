@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   NotFoundException,
+  Query,
 } from "@nestjs/common";
 import { TasksService } from "./tasks.service";
 import { CreateTaskDto } from "./dto/create-task.dto";
@@ -35,9 +36,17 @@ export class TasksController {
     return this.tasksService.create(createTaskDto);
   }
 
-  @Get(":creatorUserId")
-  async findAllCreatedByUser(@Param("creatorUserId") creatorUserId: string) {
-    const tasks = await this.tasksService.findAllCreatedByUser(creatorUserId);
+  @Get()
+  async findAllCreatedByUser(@Query() query: { creatorUserId: string }) {
+    if (query.creatorUserId === undefined || Object.keys(query).length === 0) {
+      throw new NotFoundException("parameter creatorUserId not found");
+    }
+    const tasks = await this.tasksService.findAllCreatedByUser(
+      query.creatorUserId
+    );
+    if (tasks.length === 0) {
+      throw new NotFoundException("task not found");
+    }
     const user = await this.usersService.findOne(tasks[0].creator_user_id);
     for (let index = 0; index < tasks.length; index++) {
       tasks[index]["creator_user_nickname"] = user.nickname;

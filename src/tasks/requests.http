@@ -1,0 +1,6 @@
+### Pegar todos os usuários
+GET http://localhost:3000/user/all
+
+
+### Pegar todas as tarefas criadas por um usuário específico
+GET http://localhost:3000/task?creatorUserId=232ad64b-6f5b-4d68-9f70-7c40ff3236cc
