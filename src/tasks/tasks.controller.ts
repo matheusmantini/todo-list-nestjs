@@ -216,4 +216,29 @@ export class TasksController {
 
     return taskResponsible;
   }
+
+  @Delete("remove/responsible")
+  @ApiOperation({
+    summary: "This endpoint deletes an user responsible for a specific task",
+  })
+  async deleteUserResponsibleForTask(
+    @Body() taskResponsibleDto: TaskResponsibleDto
+  ) {
+    const user = await this.usersService.findOne(
+      taskResponsibleDto.responsible_id
+    );
+    const task = await this.tasksService.findOne(taskResponsibleDto.task_id);
+
+    if (!user) {
+      throw new NotFoundException("user responsible not found");
+    }
+
+    if (!task) {
+      throw new NotFoundException("task not found");
+    }
+
+    return await this.tasksService.deleteUserResponsibleForTask(
+      taskResponsibleDto
+    );
+  }
 }

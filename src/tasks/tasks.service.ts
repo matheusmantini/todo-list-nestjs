@@ -1,4 +1,5 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
+import { Console } from "console";
 import { PrismaService } from "src/prisma/prisma.service";
 import { CreateTaskDto } from "./dto/create-task.dto";
 import { TaskResponsibleDto } from "./dto/task-responsible.dto";
@@ -71,5 +72,25 @@ export class TasksService {
     return this.prisma.responsibleUserTaskRelation.create({
       data: taskResponsibleDto,
     });
+  }
+
+  async deleteUserResponsibleForTask(taskResponsibleDto: TaskResponsibleDto) {
+    const responsibleUsersTasks = await this.findAllUsersResponsibleForTask(
+      taskResponsibleDto.task_id
+    );
+
+    for (let i = 0; i < responsibleUsersTasks.length; i++) {
+      if (
+        responsibleUsersTasks[i].responsible_id ===
+        taskResponsibleDto.responsible_id
+      ) {
+        console.log("ID: ", responsibleUsersTasks[i].id);
+        this.prisma.responsibleUserTaskRelation.delete({
+          where: { id: responsibleUsersTasks[i].id },
+        });
+      } else {
+        throw new NotFoundException("user is not responsible for this task anymore");
+      }
+    }
   }
 }

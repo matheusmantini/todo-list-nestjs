@@ -33,7 +33,7 @@
 - [x] Pegar tarefa pelo id e os responsáveis por ela
 - [x] Atualizar o status da tarefa pelo id
 - [x] Pegar todas as tarefas por status
-- [ ] Retirar um usuário responsável de uma tarefa
+- [x] Retirar um usuário responsável de uma tarefa
 - [ ] Atribuir mais de um responsável a uma tarefa
 - [ ] Procurar tarefa por termos
 - [ ] Atualizar o status de várias tarefas
