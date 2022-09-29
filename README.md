@@ -8,8 +8,8 @@
 - [x] Pegar todos os usuários
 - [x] Pegar tarefas criadas por um usuário
 - [x] Pesquisar usuário
-- [ ] Atribuir um usuário responsável a uma tarefa
-- [ ] Pegar usuários responsáveis por uma tarefa
+- [x] Atribuir um usuário responsável a uma tarefa
+- [x] Pegar usuários responsáveis por uma tarefa
 - [ ] Pegar tarefa pelo id e os responsáveis por ela
 - [ ] Atualizar o status da tarefa pelo id
 - [ ] Pegar todas as tarefas por status
