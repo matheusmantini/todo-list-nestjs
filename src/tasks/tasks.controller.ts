@@ -80,6 +80,22 @@ export class TasksController {
     return task;
   }
 
+  @Get("all/search")
+  @ApiQuery({
+    name: "status",
+    required: true,
+    type: String,
+  })
+  @ApiOperation({
+    summary: "This endpoint returns all tasks with a specific status",
+  })
+  async findAllTasksByStats(@Query() query: { status: string }) {
+    if (query.status === undefined || Object.keys(query).length === 0) {
+      throw new NotFoundException("parameter status not found");
+    }
+    return await this.tasksService.findOneStatus(query.status);
+  }
+
   @Patch(":id")
   @ApiOperation({ summary: "This endpoint updates a task by its id" })
   update(@Param("id") id: string, @Body() updateTaskDto: UpdateTaskDto) {
@@ -99,10 +115,12 @@ export class TasksController {
 
     const status = Object.values(TaskStatus);
 
-    if(!status.includes(updateTaskStatusDto.status)){
-      throw new NotFoundException("status not found. Must use: to_do, doing, done or delayed");
+    if (!status.includes(updateTaskStatusDto.status)) {
+      throw new NotFoundException(
+        "status not found. Must use: to_do, doing, done or delayed"
+      );
     }
-    
+
     return await this.tasksService.updateStatus(id, updateTaskStatusDto);
   }
 

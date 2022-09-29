@@ -22,6 +22,7 @@
 - [x] Pesquisar usuário
 - [ ] Deletar usuário
 
+
 - **Tarefas**
 
 - [x] Criar tarefa
@@ -31,8 +32,7 @@
 - [x] Pegar usuários responsáveis por uma tarefa
 - [x] Pegar tarefa pelo id e os responsáveis por ela
 - [x] Atualizar o status da tarefa pelo id
-- [ ] Pegar todas as tarefas por status
-- [ ] Pegar todas as tarefas atrasadas
+- [x] Pegar todas as tarefas por status
 - [ ] Retirar um usuário responsável de uma tarefa
 - [ ] Atribuir mais de um responsável a uma tarefa
 - [ ] Procurar tarefa por termos
