@@ -89,6 +89,22 @@ export class TasksController {
 
   // Task's Responsibles
 
+
+  @Get("/:taskId/responsiblesTask")
+  @ApiOperation({ summary: 'This endpoint returns all tasks with all users responsibles for them' })  
+  async findAllTasksWithResponsibles(@Param("taskId") taskId: string){
+    const task = await this.tasksService.findOne(taskId);
+    if (!task) {
+      throw new NotFoundException("task not found");
+    }
+
+    const usersResponsible = await this.findAllUsersResponsibleForTask(taskId);
+    task["responsible_users"] = usersResponsible;
+
+    return task;
+
+  }
+
   @Get("/:taskId/responsible")
   @ApiOperation({ summary: 'This endpoint returns all users responsibles for a task' })
   async findAllUsersResponsibleForTask(@Param("taskId") taskId: string) {
