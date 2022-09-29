@@ -2,6 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { PrismaService } from "src/prisma/prisma.service";
 import { CreateTaskDto } from "./dto/create-task.dto";
 import { TaskResponsibleDto } from "./dto/task-responsible.dto";
+import { UpdateTaskStatusDto } from "./dto/update-task-status.dto";
 import { UpdateTaskDto } from "./dto/update-task.dto";
 
 @Injectable()
@@ -31,7 +32,17 @@ export class TasksService {
   }
 
   update(id: string, updateTaskDto: UpdateTaskDto) {
-    return `This action updates a #${id} task`;
+    return this.prisma.task.update({
+      where: { id },
+      data: updateTaskDto,
+    });
+  }
+
+  updateStatus(id: string, updateTaskStatusDto: UpdateTaskStatusDto) {
+    return this.prisma.task.update({
+      where: { id },
+      data: updateTaskStatusDto,
+    });
   }
 
   remove(id: string) {

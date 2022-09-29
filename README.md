@@ -30,7 +30,7 @@
 - [x] Atribuir um usuário responsável a uma tarefa
 - [x] Pegar usuários responsáveis por uma tarefa
 - [x] Pegar tarefa pelo id e os responsáveis por ela
-- [ ] Atualizar o status da tarefa pelo id
+- [x] Atualizar o status da tarefa pelo id
 - [ ] Pegar todas as tarefas por status
 - [ ] Pegar todas as tarefas atrasadas
 - [ ] Retirar um usuário responsável de uma tarefa
