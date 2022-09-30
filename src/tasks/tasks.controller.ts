@@ -96,6 +96,29 @@ export class TasksController {
     return await this.tasksService.findOneStatus(query.status);
   }
 
+  @Get("all/search/tasks")
+  @ApiQuery({
+    name: "search",
+    required: true,
+    type: String,
+  })
+  @ApiOperation({
+    summary: "This endpoint returns all tasks by a specific search term",
+  })
+  async findTasksBySearch(@Query() query: { search: string }) {
+    if (
+      query.search === undefined ||
+      query.search === "" ||
+      Object.keys(query).length === 0
+    ) {
+      throw new NotFoundException("parameter search not found");
+    }
+    const tasksFiltered = await this.tasksService.findTasksBySearch(
+      query.search
+    );
+    return tasksFiltered;
+  }
+
   @Patch(":id")
   @ApiOperation({ summary: "This endpoint updates a task by its id" })
   update(@Param("id") id: string, @Body() updateTaskDto: UpdateTaskDto) {

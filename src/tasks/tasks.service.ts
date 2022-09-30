@@ -28,6 +28,16 @@ export class TasksService {
     return this.prisma.task.findUnique({ where: { id } });
   }
 
+  findTasksBySearch(search: string) {
+    return this.prisma.task.findMany({
+      where: {
+        title: {
+          contains: `${search}`,
+        },
+      },
+    });
+  }
+
   findOneStatus(status: string) {
     return this.prisma.task.findMany({ where: { status } });
   }

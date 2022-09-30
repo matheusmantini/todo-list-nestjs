@@ -35,7 +35,7 @@
 - [x] Pegar todas as tarefas por status
 - [x] Retirar um usuário responsável de uma tarefa
 - [ ] Atribuir mais de um responsável a uma tarefa
-- [ ] Procurar tarefa por termos
+- [x] Procurar tarefa por termos
 - [ ] Atualizar o status de várias tarefas
 - [ ] Deletar tarefa
 
