@@ -84,8 +84,7 @@ export class TasksService {
         responsibleUsersTasks[i].responsible_id ===
         taskResponsibleDto.responsible_id
       ) {
-        console.log("ID: ", responsibleUsersTasks[i].id);
-        this.prisma.responsibleUserTaskRelation.delete({
+        await this.prisma.responsibleUserTaskRelation.delete({
           where: { id: responsibleUsersTasks[i].id },
         });
       } else {

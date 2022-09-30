@@ -3,10 +3,6 @@ import { IsNotEmpty, IsOptional, IsString } from "class-validator";
 
 export class TaskResponsibleDto {
   @IsString()
-  @IsOptional()
-  id: string;
-
-  @IsString()
   @IsNotEmpty()
   @ApiProperty()
   task_id: string;
