@@ -31,9 +31,18 @@ export class TasksService {
   findTasksBySearch(search: string) {
     return this.prisma.task.findMany({
       where: {
-        title: {
-          contains: `${search}`,
-        },
+        OR: [
+          {
+            title: {
+              contains: `${search}`,
+            },
+          },
+          {
+            description: {
+              contains: `${search}`,
+            },
+          },
+        ],
       },
     });
   }
@@ -98,7 +107,9 @@ export class TasksService {
           where: { id: responsibleUsersTasks[i].id },
         });
       } else {
-        throw new NotFoundException("user is not responsible for this task anymore");
+        throw new NotFoundException(
+          "user is not responsible for this task anymore"
+        );
       }
     }
   }

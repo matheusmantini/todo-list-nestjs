@@ -103,7 +103,7 @@ export class TasksController {
     type: String,
   })
   @ApiOperation({
-    summary: "This endpoint returns all tasks by a specific search term",
+    summary: "This endpoint returns all tasks by a specific search term included in title or description",
   })
   async findTasksBySearch(@Query() query: { search: string }) {
     if (
