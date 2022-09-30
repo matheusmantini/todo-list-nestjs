@@ -22,7 +22,6 @@
 - [x] Pesquisar usuário
 - [ ] Deletar usuário
 
-
 - **Tarefas**
 
 - [x] Criar tarefa
@@ -34,12 +33,12 @@
 - [x] Atualizar o status da tarefa pelo id
 - [x] Pegar todas as tarefas por status
 - [x] Retirar um usuário responsável de uma tarefa
-- [ ] Atribuir mais de um responsável a uma tarefa
+- [x] Atribuir mais de um responsável a uma tarefa
 - [x] Procurar tarefa por termos
 - [ ] Atualizar o status de várias tarefas
 - [ ] Deletar tarefa
 
-## Deploy da Aplicação com Surge: :dash:
+## Documentação da API com Swagger: :page_facing_up:	
 
 ## Como rodar a aplicação:
 

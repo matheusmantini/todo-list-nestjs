@@ -5,6 +5,7 @@ import { CreateTaskDto } from "./dto/create-task.dto";
 import { TaskResponsibleDto } from "./dto/task-responsible.dto";
 import { UpdateTaskStatusDto } from "./dto/update-task-status.dto";
 import { UpdateTaskDto } from "./dto/update-task.dto";
+import { UpdateMultResponsiblesTask } from "./entities/update-multiple-responsible-tasks.entity";
 
 @Injectable()
 export class TasksService {
@@ -91,6 +92,28 @@ export class TasksService {
     return this.prisma.responsibleUserTaskRelation.create({
       data: taskResponsibleDto,
     });
+  }
+
+  setListOfUserResponsibleForTask(
+    updateMultResponsiblesTask: UpdateMultResponsiblesTask
+  ) {
+    const listOfResponsibles = [];
+
+    for (
+      let i = 0;
+      i < updateMultResponsiblesTask.user_responsible_id.length;
+      i++
+    ) {
+      listOfResponsibles.push({
+        task_id: updateMultResponsiblesTask.task_id,
+        responsible_id: updateMultResponsiblesTask.user_responsible_id[i],
+      });
+    }
+
+    return this.prisma.responsibleUserTaskRelation.createMany({
+      data: listOfResponsibles,
+      skipDuplicates: true,
+    })
   }
 
   async deleteUserResponsibleForTask(taskResponsibleDto: TaskResponsibleDto) {

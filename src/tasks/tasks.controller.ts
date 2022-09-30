@@ -19,6 +19,7 @@ import { UsersService } from "src/users/users.service";
 import { TaskResponsibleDto } from "./dto/task-responsible.dto";
 import { UpdateTaskStatusDto } from "./dto/update-task-status.dto";
 import { TaskStatus } from "./status.enum";
+import { UpdateMultResponsiblesTaskDto } from "./dto/update-multiple-responsible-tasks.dto";
 
 @ApiTags("Task")
 @Controller("task")
@@ -103,7 +104,8 @@ export class TasksController {
     type: String,
   })
   @ApiOperation({
-    summary: "This endpoint returns all tasks by a specific search term included in title or description",
+    summary:
+      "This endpoint returns all tasks by a specific search term included in title or description",
   })
   async findTasksBySearch(@Query() query: { search: string }) {
     if (
@@ -238,6 +240,57 @@ export class TasksController {
     );
 
     return taskResponsible;
+  }
+
+  @Post("responsible/users/set/all")
+  @ApiOperation({
+    summary:
+      "This endpoint sets a list of users as responsible for a specific task",
+  })
+  async setListOfUserResponsibleForTask(
+    @Body() updateMultResponsiblesTask: UpdateMultResponsiblesTaskDto
+  ) {
+    const userResponsibles = updateMultResponsiblesTask.user_responsible_id;
+    let user = {};
+    let userId = "";
+
+    const allTaskResponsibles =
+      await this.tasksService.findAllTasksResponsibles();
+
+    for (let i = 0; i < userResponsibles.length; i++) {
+      user = await this.usersService.findOne(userResponsibles[i]);
+      userId = userResponsibles[i];
+
+      for (let i = 0; i < allTaskResponsibles.length; i++) {
+        if (
+          allTaskResponsibles[i].task_id ===
+            updateMultResponsiblesTask.task_id &&
+          allTaskResponsibles[i].responsible_id === userResponsibles[i]
+        ) {
+          throw new BadRequestException(
+            "user is already responsible for this task"
+          );
+        }
+      }
+
+      const task = await this.tasksService.findOne(
+        updateMultResponsiblesTask.task_id
+      );
+
+      if (!user) {
+        throw new NotFoundException(
+          `user responsible id '${userId}' not found`
+        );
+      }
+
+      if (!task) {
+        throw new NotFoundException("task not found");
+      }
+
+      return await this.tasksService.setListOfUserResponsibleForTask(
+        updateMultResponsiblesTask
+      );
+    }
   }
 
   @Delete("remove/responsible")
