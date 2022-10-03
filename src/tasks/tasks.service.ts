@@ -63,10 +63,10 @@ export class TasksService {
     });
   }
 
-  updateStatus(id: string, updateTaskStatusDto: UpdateTaskStatusDto) {
+  updateStatus(id: string, status: string) {
     return this.prisma.task.update({
       where: { id },
-      data: updateTaskStatusDto,
+      data: { status },
     });
   }
 
@@ -88,12 +88,13 @@ export class TasksService {
     return this.prisma.responsibleUserTaskRelation.findMany();
   }
 
-  setUserResponsibleForTask(taskResponsibleDto: TaskResponsibleDto) {
+  setUserResponsibleForTask(task_id: string, responsible_id: string) {
     return this.prisma.responsibleUserTaskRelation.create({
-      data: taskResponsibleDto,
+      data: { task_id, responsible_id },
     });
   }
 
+  // APAGAR SE NÃO FOR UTILIZAR MAIS
   setListOfUserResponsibleForTask(
     updateMultResponsiblesTask: UpdateMultResponsiblesTask
   ) {
@@ -113,7 +114,7 @@ export class TasksService {
     return this.prisma.responsibleUserTaskRelation.createMany({
       data: listOfResponsibles,
       skipDuplicates: true,
-    })
+    });
   }
 
   async deleteUserResponsibleForTask(taskResponsibleDto: TaskResponsibleDto) {

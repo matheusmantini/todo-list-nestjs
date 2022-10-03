@@ -27,18 +27,17 @@
 - [x] Criar tarefa
 - [x] Pegar tarefa pelo id
 - [x] Pegar tarefas criadas por um usuário
-- [x] Atribuir um usuário responsável a uma tarefa
 - [x] Pegar usuários responsáveis por uma tarefa
 - [x] Pegar tarefa pelo id e os responsáveis por ela
-- [x] Atualizar o status da tarefa pelo id
 - [x] Pegar todas as tarefas por status
 - [x] Retirar um usuário responsável de uma tarefa
-- [x] Atribuir mais de um responsável a uma tarefa
+- [x] Atribuir um ou vários responsáveis por uma tarefa
 - [x] Procurar tarefa por termos
-- [ ] Atualizar o status de várias tarefas
+- [x] Atualizar o status de uma ou várias tarefas pelo id
 - [ ] Deletar tarefa
 
 ## Documentação da API com Swagger: :page_facing_up:	
+http://localhost:3000/api
 
 ## Como rodar a aplicação:
 

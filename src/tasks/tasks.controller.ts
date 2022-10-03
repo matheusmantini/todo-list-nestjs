@@ -20,6 +20,7 @@ import { TaskResponsibleDto } from "./dto/task-responsible.dto";
 import { UpdateTaskStatusDto } from "./dto/update-task-status.dto";
 import { TaskStatus } from "./status.enum";
 import { UpdateMultResponsiblesTaskDto } from "./dto/update-multiple-responsible-tasks.dto";
+import { TaskMultipleResponsibleDto } from "./dto/task-multiple-responsible.dto";
 
 @ApiTags("Task")
 @Controller("task")
@@ -127,26 +128,35 @@ export class TasksController {
     return this.tasksService.update(id, updateTaskDto);
   }
 
-  @Put("/status/:id/")
-  @ApiOperation({ summary: "This endpoint updates a task status by its id" })
-  async updateStatus(
-    @Param("id") id: string,
+  @Put("/status/edit/")
+  @ApiOperation({
+    summary: "This endpoint updates one or multiple task's status by its id",
+  })
+  async updateStatusMultipleTasks(
     @Body() updateTaskStatusDto: UpdateTaskStatusDto
   ) {
-    const task = await this.tasksService.findOne(id);
-    if (!task) {
-      throw new NotFoundException("task not found");
-    }
+    let task = {};
+    for (let i = 0; i < updateTaskStatusDto.task_id.length; i++) {
+      task = await this.tasksService.findOne(updateTaskStatusDto.task_id[i]);
+      if (!task) {
+        throw new NotFoundException(
+          `task with id ${updateTaskStatusDto.task_id[i]} not found`
+        );
+      }
 
-    const status = Object.values(TaskStatus);
+      const status = Object.values(TaskStatus);
 
-    if (!status.includes(updateTaskStatusDto.status)) {
-      throw new NotFoundException(
-        "status not found. Must use: to_do, doing, done or delayed"
+      if (!status.includes(updateTaskStatusDto.status)) {
+        throw new NotFoundException(
+          "status not found. Must use: to_do, doing, done or delayed"
+        );
+      }
+
+      await this.tasksService.updateStatus(
+        updateTaskStatusDto.task_id[i],
+        updateTaskStatusDto.status
       );
     }
-
-    return await this.tasksService.updateStatus(id, updateTaskStatusDto);
   }
 
   @Delete(":id")
@@ -202,93 +212,52 @@ export class TasksController {
 
   @Post("responsible")
   @ApiOperation({
-    summary: "This endpoint sets an user responsible for a specific task",
+    summary:
+      "This endpoint sets one or multiple users as responsible for a specific task",
   })
-  async setUserResponsibleForTask(
-    @Body() taskResponsibleDto: TaskResponsibleDto
+  async setUsersResponsibleForTask(
+    @Body() updateMultResponsiblesTask: UpdateMultResponsiblesTaskDto
   ) {
-    const user = await this.usersService.findOne(
-      taskResponsibleDto.responsible_id
-    );
-    const task = await this.tasksService.findOne(taskResponsibleDto.task_id);
+    const userResponsibles = updateMultResponsiblesTask.responsible_id;
+    let user = {};
+    let userId = "";
 
-    if (!user) {
-      throw new NotFoundException("user responsible not found");
-    }
+    const task = await this.tasksService.findOne(
+      updateMultResponsiblesTask.task_id
+    );
 
     if (!task) {
       throw new NotFoundException("task not found");
     }
 
-    const allTaskResponsibles =
-      await this.tasksService.findAllTasksResponsibles();
+    const tasksResponsibles =
+      await this.tasksService.findAllUsersResponsibleForTask(
+        updateMultResponsiblesTask.task_id
+      );
 
-    for (let i = 0; i < allTaskResponsibles.length; i++) {
-      if (
-        allTaskResponsibles[i].task_id === taskResponsibleDto.task_id &&
-        allTaskResponsibles[i].responsible_id ===
-          taskResponsibleDto.responsible_id
-      ) {
-        throw new BadRequestException(
-          "user is already responsible for this task"
-        );
-      }
-    }
-
-    const taskResponsible = await this.tasksService.setUserResponsibleForTask(
-      taskResponsibleDto
-    );
-
-    return taskResponsible;
-  }
-
-  @Post("responsible/users/set/all")
-  @ApiOperation({
-    summary:
-      "This endpoint sets a list of users as responsible for a specific task",
-  })
-  async setListOfUserResponsibleForTask(
-    @Body() updateMultResponsiblesTask: UpdateMultResponsiblesTaskDto
-  ) {
-    const userResponsibles = updateMultResponsiblesTask.user_responsible_id;
-    let user = {};
-    let userId = "";
-
-    const allTaskResponsibles =
-      await this.tasksService.findAllTasksResponsibles();
+    console.log("tasksResponsibles", tasksResponsibles);
 
     for (let i = 0; i < userResponsibles.length; i++) {
       user = await this.usersService.findOne(userResponsibles[i]);
       userId = userResponsibles[i];
 
-      for (let i = 0; i < allTaskResponsibles.length; i++) {
-        if (
-          allTaskResponsibles[i].task_id ===
-            updateMultResponsiblesTask.task_id &&
-          allTaskResponsibles[i].responsible_id === userResponsibles[i]
-        ) {
+      for (let i = 0; i < tasksResponsibles.length; i++) {
+        if (tasksResponsibles[i].responsible_id === userId) {
           throw new BadRequestException(
-            "user is already responsible for this task"
+            `user responsible id '${userResponsibles[i]}' is already responsible for the informed task`
           );
         }
       }
 
-      const task = await this.tasksService.findOne(
-        updateMultResponsiblesTask.task_id
-      );
-
       if (!user) {
         throw new NotFoundException(
-          `user responsible id '${userId}' not found`
+          `user responsible id '${userResponsibles[i]}' not found`
         );
       }
 
-      if (!task) {
-        throw new NotFoundException("task not found");
-      }
-
-      return await this.tasksService.setListOfUserResponsibleForTask(
-        updateMultResponsiblesTask
+      await this.tasksService.setUserResponsibleForTask(
+        updateMultResponsiblesTask.task_id,
+        userId
       );
     }
   }
