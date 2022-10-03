@@ -34,7 +34,7 @@
 - [x] Atribuir um ou vários responsáveis por uma tarefa
 - [x] Procurar tarefa por termos
 - [x] Atualizar o status de uma ou várias tarefas pelo id
-- [ ] Deletar tarefa
+- [x] Deletar tarefa
 
 ## Documentação da API com Swagger: :page_facing_up:	
 http://localhost:3000/api

@@ -70,8 +70,8 @@ export class TasksService {
     });
   }
 
-  remove(id: string) {
-    return `This action removes a #${id} task`;
+  removeTask(id: string) {
+    return this.prisma.task.delete({ where: { id } });
   }
 
   // Task's Responsibles
@@ -94,29 +94,6 @@ export class TasksService {
     });
   }
 
-  // APAGAR SE NÃO FOR UTILIZAR MAIS
-  setListOfUserResponsibleForTask(
-    updateMultResponsiblesTask: UpdateMultResponsiblesTask
-  ) {
-    const listOfResponsibles = [];
-
-    for (
-      let i = 0;
-      i < updateMultResponsiblesTask.user_responsible_id.length;
-      i++
-    ) {
-      listOfResponsibles.push({
-        task_id: updateMultResponsiblesTask.task_id,
-        responsible_id: updateMultResponsiblesTask.user_responsible_id[i],
-      });
-    }
-
-    return this.prisma.responsibleUserTaskRelation.createMany({
-      data: listOfResponsibles,
-      skipDuplicates: true,
-    });
-  }
-
   async deleteUserResponsibleForTask(taskResponsibleDto: TaskResponsibleDto) {
     const responsibleUsersTasks = await this.findAllUsersResponsibleForTask(
       taskResponsibleDto.task_id
@@ -134,6 +111,25 @@ export class TasksService {
         throw new NotFoundException(
           "user is not responsible for this task anymore"
         );
+      }
+    }
+  }
+
+  async deleteUsersResponsibleForTask(
+    task_id: string,
+    responsible_id: string[]
+  ) {
+    const responsibleUsersTasks = await this.findAllUsersResponsibleForTask(
+      task_id
+    );
+
+    for (let i = 0; i < responsibleUsersTasks.length; i++) {
+      for (let j = 0; j < responsible_id.length; j++) {
+        if (responsibleUsersTasks[i].responsible_id === responsible_id[j]) {
+          await this.prisma.responsibleUserTaskRelation.deleteMany({
+            where: { id: responsibleUsersTasks[i].id },
+          });
+        }
       }
     }
   }

@@ -161,8 +161,17 @@ export class TasksController {
 
   @Delete(":id")
   @ApiOperation({ summary: "This endpoint removes a task by its id" })
-  remove(@Param("id") id: string) {
-    return this.tasksService.remove(id);
+  async removeTask(@Param("id") taskId: string) {
+    const usersResponsible = await this.findAllUsersResponsibleForTask(taskId);
+
+    for (let i = 0; i < usersResponsible.length; i++) {
+      this.tasksService.deleteUsersResponsibleForTask(
+        taskId,
+        [usersResponsible[i].responsible_id]
+      );
+    }
+    
+    return this.tasksService.removeTask(taskId);
   }
 
   // Task's Responsibles
